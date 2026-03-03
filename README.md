@@ -11,6 +11,8 @@ sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Mihomo-OpenWRT_Manage
 
 ---
 
+# Ручная установка и настройка:
+
 # Генерируем WARP
 
 Генерируем **WARP** в TГ боте - https://t.me/warp_generator_bot
