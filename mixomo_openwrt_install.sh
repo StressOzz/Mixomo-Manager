@@ -1181,32 +1181,6 @@ EOF
     /etc/init.d/firewall restart
 }
 
-select_magitrickle_config() {
-  local choice
-  local URL_DEFAULT="https://raw.githubusercontent.com/StressOzz/Use_WARP_on_OpenWRT/refs/heads/main/files/MagiTrickle/config.yaml"
-  local URL_ITDOG="https://raw.githubusercontent.com/StressOzz/Use_WARP_on_OpenWRT/refs/heads/main/files/MagiTrickle/configAD.yaml"
-
-  echo
-  log_step "Выбор списка для MagiTrickle"
-  echo "  1) ITDog Allow Domains"
-  echo "  2) Internet Helper"
-  echo "  3) Oставить текущий список"
-  echo
-
-  while true; do
-    printf "Введите номер [1-3]: "
-    read -r choice
-    choice="${choice:-2}"
-
-    case "$choice" in
-      1) MAGITRICKLE_CONFIG_URL="$URL_ITDOG"; return 0 ;;
-      2) MAGITRICKLE_CONFIG_URL="$URL_DEFAULT"; return 0 ;;
-      3) MAGITRICKLE_CONFIG_URL="";            return 0 ;;
-      *) echo "Неверный выбор. Введите 1, 2 или 3." ;;
-    esac
-  done
-}
-
 install_magitrickle() {
     
     echo "--> Подготовка к установке MagiTrickle..."
@@ -1237,22 +1211,14 @@ install_magitrickle() {
 			echo "--> Установка списка для MagiTrickle..."
 			
 CONFIGPATH="/etc/magitrickle/state/config.yaml"
+configAD="https://raw.githubusercontent.com/StressOzz/Use_WARP_on_OpenWRT/refs/heads/main/files/MagiTrickle/configAD.yaml"
 
-select_magitrickle_config
-
-if [ -n "$MAGITRICKLE_CONFIG_URL" ]; then
-  wget -q -O "$CONFIGPATH" "$MAGITRICKLE_CONFIG_URL" || {
+  wget -q -O "$CONFIGPATH" "$configAD" || {
     echo "Ошибка: не удалось скачать список!"
     echo "URL: $MAGITRICKLE_CONFIG_URL"
     return 1
   }
 
-  if [ ! -s "$CONFIGPATH" ]; then
-  echo; echo "Ошибка: config пустой/не создан: $CONFIGPATH"; echo
-  fi
-fi
-
-echo
             echo "--> Включение автозапуска MagiTrickle..."
             /etc/init.d/magitrickle enable >/dev/null 2>&1
             echo "--> Запуск MagiTrickle..."
