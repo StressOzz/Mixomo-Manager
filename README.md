@@ -2,9 +2,7 @@
 
 ---
 
-# Установка и удаление Mixomo
-
-- для установки в **SSH** запустите скрипт:
+- в **SSH** запустите скрипт:
 ```
 sh <(wget -O - https://raw.githubusercontent.com/StressOzz/WARP_on_OpenWRT/main/Mihomo-OpenWRT_Manager.sh)
 ```
