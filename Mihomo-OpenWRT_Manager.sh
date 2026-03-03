@@ -64,7 +64,7 @@ clear
 echo -e "╔═══════════════════════════════════════════╗"
 echo -e "║ ${BLUE}mixomo-openwrt on Internet-Helper Manager${NC} ║"
 echo -e "╚═══════════════════════════════════════════╝"
-echo -e "                                 by StressOzz"
+echo -e "                                 ${DGRAY}by StressOzz${NC}"
 echo
 echo -e "${CYAN}1) ${GREEN}Установить ${NC}mixomo-openwrt"
 echo -e "${CYAN}2) ${GREEN}Удалить ${NC}mixomo-openwrt"
