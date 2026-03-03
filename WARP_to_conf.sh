@@ -1,12 +1,17 @@
 #!/bin/sh
 set -eu
 
+GREEN="\033[1;32m"
+RED="\033[1;31m"
+NC="\033[0m"
+
+
 IN="/root/WARP.conf"
 OUT="/etc/mihomo/config.yaml"
 TMP="$(mktemp)"
 
-[ -r "$IN" ] || { echo "Can't read $IN" >&2; exit 1; }
-command -v awk >/dev/null 2>&1 || { echo "Missing awk" >&2; exit 1; }
+[ -r "$IN" ] || { echo -e "${RED}Can't read $IN${NC}" >&2; exit 1; }
+command -v awk >/dev/null 2>&1 || { echo -e "${RED}Missing awk${NC}" >&2; exit 1; }
 
 awk -v OUT="$TMP" '
 function trim(s){ gsub(/^[ \t\r\n]+|[ \t\r\n]+$/, "", s); return s }
@@ -174,3 +179,4 @@ mv -f "$TMP" "$OUT"
 
 /etc/init.d/mihomo reload
 /etc/init.d/mihomo restart
+echo -e "\n${GREEN}WARP интегрирован!${NC}"
