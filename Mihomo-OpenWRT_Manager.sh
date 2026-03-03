@@ -66,15 +66,15 @@ echo -e "║ ${BLUE}mixomo-openwrt on Internet-Helper Manager${NC} ║"
 echo -e "╚═══════════════════════════════════════════╝"
 echo -e "                                 by StressOzz"
 echo
-echo -e "${GREEN}1) ${GREEN}Установить ${NC}mixomo-openwrt"
-echo -e "${GREEN}2) ${GREEN}Удалить ${NC}mixomo-openwrt"
-echo -e "${GREEN}3) ${GREEN}Сменить список ${NC}MagiTrickle"
-echo -e "${GREEN}4) ${GREEN}Сгенерировать ${NC}WARP"
-echo -e "${GREEN}5) ${GREEN}Интегрировать ${NC}WARP${GREEN} в ${NC}mixomo-openwrt"
-echo -e "${GREEN}6) ${GREEN}Удалить ${NC}→ ${GREEN}установить ${NC}→ ${GREEN}настроить ${NC}mixomo-openwrt"
-echo -e "Enter) ${GREEN}Выход"
+echo -e "${CYAN}1) ${GREEN}Установить ${NC}mixomo-openwrt"
+echo -e "${CYAN}2) ${GREEN}Удалить ${NC}mixomo-openwrt"
+echo -e "${CYAN}3) ${GREEN}Сменить список ${NC}MagiTrickle"
+echo -e "${CYAN}4) ${GREEN}Сгенерировать ${NC}WARP"
+echo -e "${CYAN}5) ${GREEN}Интегрировать ${NC}WARP${GREEN} в ${NC}mixomo-openwrt"
+echo -e "${CYAN}6) ${GREEN}Удалить ${NC}→ ${GREEN}установить ${NC}→ ${GREEN}настроить ${NC}mixomo-openwrt"
+echo -e "${CYAN}Enter) ${GREEN}Выход"
 echo
-echo -ne "Выберите пункт: "
+echo -ne "${YELLOW}Выберите пункт: ${NC}"
 read choiceM
 
 case "$choiceM" in
