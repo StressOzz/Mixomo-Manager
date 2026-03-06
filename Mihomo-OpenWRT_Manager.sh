@@ -13,6 +13,8 @@ CONFIGPATH="/etc/magitrickle/state/config.yaml"
 URL_DEFAULT="https://raw.githubusercontent.com/StressOzz/Mihomo-OpenWRT_Manager/refs/heads/main/files/MagiTrickle/config.yaml"
 URL_ITDOG="https://raw.githubusercontent.com/StressOzz/Mihomo-OpenWRT_Manager/refs/heads/main/files/MagiTrickle/configAD.yaml"
 
+echo 'sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Mihomo-OpenWRT_Manager/main/Mihomo-OpenWRT_Manager.sh)' > /usr/bin/mom; chmod +x /usr/bin/mom
+
 PAUSE() { echo -ne "\nНажмите Enter..."; read dummy; }
 
 magitrickle_config() {
