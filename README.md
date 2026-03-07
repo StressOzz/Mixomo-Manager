@@ -20,7 +20,6 @@ sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/M
    2) Список от Internet Helper
 4) Сгенерировать WARP в /root/WARP.conf
 5) Интегрировать /root/WARP.conf в Mihomo
-Enter) Выход
 ```
 
 ---
@@ -150,12 +149,11 @@ sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/m
 
 ---
 
-В общем инструмент вроде не плохой...
-Можно по экспериментировать...
-
----
-
 Совместно с Zapret работает...
 Можно использовать как отдельный инструмент, так и в помощь Zapret...
 
 ---
+
+# Благодарности
+
+Спасибо [Internet Helper](https://github.com/Internet-Helper/) за [Mihomo](https://github.com/Internet-Helper/mixomo-openwrt)
