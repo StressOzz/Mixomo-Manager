@@ -9,7 +9,7 @@ CYAN="\033[1;36m"
 
 clear
 
-echo -e "${MAGENTA}Генерируем ключи AWG${NC}"
+echo -e "${MAGENTA}Генерируем WARP.conf${NC}"
 
 if command -v apk >/dev/null 2>&1; then
 PKG="apk"
@@ -77,7 +77,7 @@ sec() {
 ins "$1" "$2" -H "Authorization: Bearer $3" "${@:4}"
 }
 
-echo -e "${GREEN}Регистрируем устройство в Cloudflare...${NC}"
+echo -e "${CYAN}Регистрируем устройство в Cloudflare...${NC}"
 
 response=$(ins POST "reg" \
 -d "{\"install_id\":\"\",\"tos\":\"$(date -u +%FT%TZ)\",\"key\":\"${pub}\",\"fcm_token\":\"\",\"type\":\"ios\",\"locale\":\"en_US\"}")
