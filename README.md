@@ -6,9 +6,15 @@ sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/M
 ```
 
 - Установите **Mixomo**
+
+   При установки **MagiTrickle** появится меню выбора версии: `Оригинальный MagiTrickle` или `MagiTrickle badigit mod`
+   
+   Для обычного пользователя достаточно `Оригинальной версии`
 - Сгенерируйте **WARP** 
  
    Для генерации **WARP** через скрипт возможно понадобится установить **[Zapret](https://github.com/StressOzz/Zapret-Manager)**
+   
+   При генерации появится меню выбора `endpoind` по странам
 - Интегрируйте **WARP**
 
    Для интеграции своего **WARP** файла - скиньте его в `/root/WARP.conf`
