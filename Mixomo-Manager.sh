@@ -103,6 +103,7 @@ check_status
 grep -qF "$h" /etc/mihomo/config.yaml && echo -e "${YELLOW}WARP endpoint:       ${CYAN}$c${NC}" && break
 done <<EOF
 Россия CF|engage.cloudflareclient.com:4500
+Россия CF ALT|engage.cloudflareclient.com:2408
 Нидерланды|45.84.222.208:4500
 Америка|usa-pop.astracat.ru:4500
 Сингапур|5.34.176.170:4500
