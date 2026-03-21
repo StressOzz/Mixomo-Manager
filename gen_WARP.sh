@@ -77,7 +77,7 @@ printf "${CYAN}%2d) ${GREEN}%-10s${MAGENTA}| ${color}%-7s${MAGENTA}| ${CYAN}%s${
 i=$((i+1))
 done
 
-echo -en "\n${YELLOW}Выберите страну (Enter = Россия):${NC} "
+echo -en "\n${YELLOW}Выберите страну (Enter = Россия CF):${NC} "
 read num
 
 MAX_NUM=$(echo "$SORTED_LIST" | wc -l)
