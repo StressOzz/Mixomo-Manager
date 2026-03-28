@@ -5,13 +5,14 @@ GREEN="\033[1;32m"
 RED="\033[1;31m"
 NC="\033[0m"
 
-
 IN="/root/WARP.conf"
 OUT="/etc/mihomo/config.yaml"
 TMP="$(mktemp)"
 
-[ -r "$IN" ] || { echo -e "${RED}Can't read $IN${NC}" >&2; exit 1; }
-command -v awk >/dev/null 2>&1 || { echo -e "${RED}Missing awk${NC}" >&2; exit 1; }
+PAUSE() { echo -ne "\nНажмите Enter..."; read dummy; }
+
+[ -r "$IN" ] || { echo -e "\n${RED}Файл ${NC}$IN ${RED}отсутвтвует!${NC}"; PAUSE; exit 1; }
+command -v awk >/dev/null 2>&1 || { echo -e "\n${RED}Отсутвтвует ${NC}awk"; PAUSE; exit 1; }
 
 awk -v OUT="$TMP" '
 function trim(s){ gsub(/^[ \t\r\n]+|[ \t\r\n]+$/, "", s); return s }
@@ -91,7 +92,8 @@ BEGIN{
 }
 END{
   if(priv=="" || pub=="" || endpoint==""){
-    print "WARP.conf missing required fields (PrivateKey/PublicKey/Endpoint)" > "/dev/stderr"
+    echo -e "\n${RED}В ${NC}WARP.conf${RED} отсутствуют обязательные поля!${NC}"
+    PAUSE
     exit 2
   }
   split_endpoint(endpoint)
@@ -101,7 +103,7 @@ END{
 
   if(allowed=="") allowed="0.0.0.0/0,::/0"
   n=split(allowed, aip, ",")
-  # YAML список allowed-ips (как у тебя в примере)
+  
   allowed_block=""
   for(i=1;i<=n;i++){
     if(aip[i]=="") continue
@@ -117,7 +119,7 @@ END{
   print "external-controller: 0.0.0.0:9090" >> OUT
   print "external-ui: ui" >> OUT
   print "external-ui-url: https://github.com/MetaCubeX/metacubexd/releases/latest/download/compressed-dist.tgz" >> OUT
-  print "secret: \"\"" >> OUT
+  print "secret:" >> OUT
   print "unified-delay: true" >> OUT
   print "profile:" >> OUT
   print "  store-selected: true" >> OUT
@@ -152,7 +154,6 @@ END{
   if(mtu!="") print "    mtu: " mtu >> OUT
   if(keep!="") print "    persistent-keepalive: " keep >> OUT
 
-  # Если есть хоть один AWG-параметр — добавляем блок
   if(s1!="" || s2!="" || s3!="" || s4!="" || jc!="" || jmin!="" || jmax!="" || h1!="" || h2!="" || h3!="" || h4!="" || i1!="" || i2!="" || i3!="" || i4!="" || i5!=""){
     print "    amnezia-wg-option:" >> OUT
     if(s1!="")  print "      s1: " s1 >> OUT
@@ -172,8 +173,6 @@ END{
     if(i4!="")  print "      i4: " yaml_quote(i4) >> OUT
     if(i5!="")  print "      i5: " yaml_quote(i5) >> OUT
   }
-
-  print "    ip-version: ipv4" >> OUT
 }
 ' "$IN"
 
@@ -183,4 +182,4 @@ mv -f "$TMP" "$OUT"
 
 /etc/init.d/mihomo reload
 /etc/init.d/mihomo restart
-echo -e "\n${GREEN}WARP интегрирован!${NC}"
+echo -e "\n${NC}WARP${GREEN} интегрирован в ${NC}Mihomo${GREEN}!${NC}"
