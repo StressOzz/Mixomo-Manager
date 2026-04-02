@@ -194,13 +194,13 @@ conf=$(cat <<EOF
 [Interface]
 PrivateKey = ${priv}
 Address = ${client_ipv4}, ${client_ipv6}
-DNS = 1.1.1.1, 2606:4700:4700::1111
+DNS = 1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001
 MTU = 1280
 S1 = 0
 S2 = 0
-Jc = 4
-Jmin = 40
-Jmax = 70
+Jc = 120
+Jmin = 23
+Jmax = 911
 H1 = 1
 H2 = 2
 H3 = 3
@@ -219,6 +219,5 @@ echo
 echo -e "${GREEN}========== ${YELLOW}WARP CONFIG${GREEN} ==========${NC}"
 echo "$conf"
 echo -e "${GREEN}=================================${NC}"
-
 echo "$conf" > /root/WARP.conf
 echo -e "\n${YELLOW}Файл сохранён:${NC} /root/WARP.conf"
