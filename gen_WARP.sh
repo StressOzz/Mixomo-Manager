@@ -1,18 +1,19 @@
 #!/bin/sh
 
-EP_LIST='Россия CF    |engage.cloudflareclient.com:4500
-Россия CF ALT|engage.cloudflareclient.com:2408
-Нидерланды   |45.84.222.208:4500
-Америка      |usa.tribukvy.ltd:4500
-Сингапур     |5.34.176.170:4500
-Латвия       |150.241.75.91:4500
-Нидерланды   |nl.tribukvy.ltd:4500
-Финляндия    |fi1.tribukvy.ltd:4500
-Россия       |ru0.tribukvy.ltd:4500
-Эстония      |ee.tribukvy.ltd:4500
-Польша 2     |pl0.tribukvy.ltd:4500
-Польша 1     |pl.tribukvy.ltd:4500
-Германия     |de.tribukvy.ltd:4500'
+EP_LIST='Россия        |engage.cloudflareclient.com:4500
+Россия #1     |engage.cloudflareclient.com:2408
+Россия #2     |engage.cloudflareclient.com:500
+Нидерланды #1 |45.84.222.208:4500
+Сингапур      |5.34.176.170:4500
+Латвия        |150.241.75.91:4500
+Америка       |usa.tribukvy.ltd:4500
+Нидерланды    |nl.tribukvy.ltd:4500
+Финляндия     |fi1.tribukvy.ltd:4500
+Россия        |ru0.tribukvy.ltd:4500
+Эстония       |ee.tribukvy.ltd:4500
+Польша #1     |pl0.tribukvy.ltd:4500
+Польша        |pl.tribukvy.ltd:4500
+Германия      |de.tribukvy.ltd:4500'
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -76,7 +77,7 @@ printf "${CYAN}%2d) ${GREEN}%-10s${MAGENTA}| ${color}%-7s${MAGENTA}| ${CYAN}%s${
 i=$((i+1))
 done
 
-echo -en "\n${YELLOW}Выберите страну (Enter = Россия CF):${NC} "
+echo -en "\n${YELLOW}Выберите страну (Enter = Россия):${NC} "
 read num
 
 MAX_NUM=$(echo "$SORTED_LIST" | wc -l)
