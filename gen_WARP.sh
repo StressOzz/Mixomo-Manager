@@ -9,7 +9,7 @@ EP_LIST='Россия        |engage.cloudflareclient.com:4500
 Америка       |usa.tribukvy.ltd:4500
 Нидерланды    |nl.tribukvy.ltd:4500
 Финляндия     |fi1.tribukvy.ltd:4500
-Россия        |ru0.tribukvy.ltd:4500
+Россия #3     |ru0.tribukvy.ltd:4500
 Эстония       |ee.tribukvy.ltd:4500
 Польша #1     |pl0.tribukvy.ltd:4500
 Польша        |pl.tribukvy.ltd:4500
@@ -25,17 +25,12 @@ CYAN="\033[1;36m"
 clear
 
 chose_endpoint() {
-
 echo -e "${CYAN}Тестируем пинг до ${NC}endpoint\n"
-
 TMP_FILE=$(mktemp)
-
 while IFS='|' read -r country ep; do
 (
 host="${ep%%:*}"
-
 ping_ms="$(ping -c3 -W2 "$host" 2>/dev/null | awk -F'/' 'END{print int($5)}')"
-
 if [ -z "$ping_ms" ] || [ "$ping_ms" -eq 0 ]; then
 ping_val="FAIL"
 ping_sort=9999
@@ -43,22 +38,16 @@ else
 ping_val="${ping_ms} ms"
 ping_sort="$ping_ms"
 fi
-
 echo "${ping_sort}|${country}|${ep}|${ping_val}" >> "$TMP_FILE"
 ) &
 done <<EOF
 $EP_LIST
 EOF
-
 wait
-
 SORTED_LIST=$(sort -t'|' -k1n "$TMP_FILE")
 rm -f "$TMP_FILE"
-
 i=1
 echo "$SORTED_LIST" | while IFS='|' read -r ping_sort country ep ping_val; do
-
-
 if [ "$ping_val" = "FAIL" ]; then
 color="$RED"
 else
@@ -71,24 +60,18 @@ else
 color="$RED"
 fi
 fi
-
 printf "${CYAN}%2d) ${GREEN}%-10s${MAGENTA}| ${color}%-7s${MAGENTA}| ${CYAN}%s${NC}\n" "$i" "$country" "$ping_val" "$ep"
-
 i=$((i+1))
 done
-
 echo -en "\n${YELLOW}Выберите страну (Enter = Россия):${NC} "
 read num
-
 MAX_NUM=$(echo "$SORTED_LIST" | wc -l)
-
 if ! printf '%s' "$num" | grep -qE '^[0-9]+$' || [ "$num" -lt 1 ] || [ "$num" -gt "$MAX_NUM" ]; then
 ENDPOINT="engage.cloudflareclient.com:4500"
 else
 ENDPOINT="$(echo "$SORTED_LIST" | sed -n "${num}p" | cut -d'|' -f3)"
 [ -z "$ENDPOINT" ] && ENDPOINT="engage.cloudflareclient.com:4500"
 fi
-
 echo
 }
 
@@ -103,45 +86,44 @@ echo -e "${RED}Не найден пакетный менеджер!${NC}"
 exit 1
 fi
 
-echo -e "${CYAN}Обновляем пакеты${NC}"
+echo -e "${CYAN}Проверяем зависимости${NC}"
 
+deps="wireguard-tools curl jq coreutils-base64"
+missing=""
+
+for pkg in $deps; do
 if [ "$PKG" = "apk" ]; then
-apk update >/dev/null 2>&1 || {
-echo -e "\n${RED}Ошибка обновления пакетов!${NC}"
-exit 1
-}
+apk info -e "$pkg" >/dev/null 2>&1 || missing="$missing $pkg"
 else
-opkg update >/dev/null 2>&1 || {
-echo -e "\n${RED}Ошибка обновления пакетов!${NC}"
-exit 1
-}
+opkg list-installed 2>/dev/null | grep -qF "^$pkg " || missing="$missing $pkg"
+fi
+done
+
+if [ -n "$missing" ]; then
+echo -e "${CYAN}Обновляем пакеты${NC}"
+if [ "$PKG" = "apk" ]; then
+apk update >/dev/null 2>&1 || { echo -e "\n${RED}Ошибка обновления пакетов!${NC}"; exit 1; }
+else
+opkg update >/dev/null 2>&1 || { echo -e "\n${RED}Ошибка обновления пакетов!${NC}"; exit 1; }
 fi
 
 install_pkg() {
 pkg="$1"
-
 if [ "$PKG" = "apk" ]; then
 apk info -e "$pkg" >/dev/null 2>&1 && return
 echo -e "${GREEN}Устанавливаем:${NC} $pkg"
-apk add "$pkg" >/dev/null 2>&1 || {
-echo -e "\n${RED}Ошибка установки${NC} $pkg"
-exit 1
-}
+apk add "$pkg" >/dev/null 2>&1 || { echo -e "\n${RED}Ошибка установки${NC} $pkg"; exit 1; }
 else
 opkg list-installed 2>/dev/null | grep -qF "^$pkg " && return
 echo -e "${GREEN}Устанавливаем:${NC} $pkg"
-opkg install "$pkg" >/dev/null 2>&1 || {
-echo -e "\n${RED}Ошибка установки${NC} $pkg"
-exit 1
-}
+opkg install "$pkg" >/dev/null 2>&1 || { echo -e "\n${RED}Ошибка установки${NC} $pkg"; exit 1; }
 fi
 }
 
-echo -e "${CYAN}Проверяем зависимости${NC}"
-
-for pkg in wireguard-tools curl jq coreutils-base64; do
+for pkg in $missing; do
 install_pkg "$pkg"
 done
+fi
 
 echo -e "${CYAN}Генерируем ключи${NC}"
 priv="$(wg genkey)"
