@@ -88,7 +88,7 @@ fi
 
 echo -e "${CYAN}Проверяем зависимости${NC}"
 
-deps="wireguard-tools curl jq coreutils-base64"
+deps="wireguard-tools curl jq"
 missing=""
 
 for pkg in $deps; do
