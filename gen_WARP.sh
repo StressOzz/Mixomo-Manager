@@ -1,9 +1,9 @@
 #!/bin/sh
 
 EP_LIST='Россия        |engage.cloudflareclient.com:4500
-Россия #1     |engage.cloudflareclient.com:2408
-Россия #2     |engage.cloudflareclient.com:500
-Нидерланды #1 |45.84.222.208:4500
+Россия #2     |engage.cloudflareclient.com:2408
+Россия #3     |engage.cloudflareclient.com:500
+Нидерланды #2 |45.84.222.208:4500
 Сингапур      |5.34.176.170:4500
 Латвия        |150.241.75.91:4500
 Америка       |usa.tribukvy.ltd:4500
@@ -11,9 +11,8 @@ EP_LIST='Россия        |engage.cloudflareclient.com:4500
 Финляндия     |fi1.tribukvy.ltd:4500
 Россия #3     |ru0.tribukvy.ltd:4500
 Эстония       |ee.tribukvy.ltd:4500
-Польша #1     |pl0.tribukvy.ltd:4500
-Польша        |pl.tribukvy.ltd:4500
-Германия      |de.tribukvy.ltd:4500'
+Польша #2     |pl0.tribukvy.ltd:4500
+Польша        |pl.tribukvy.ltd:4500'
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -95,7 +94,7 @@ for pkg in $deps; do
 if [ "$PKG" = "apk" ]; then
 apk info -e "$pkg" >/dev/null 2>&1 || missing="$missing $pkg"
 else
-opkg list-installed 2>/dev/null | grep -qF "^$pkg " || missing="$missing $pkg"
+opkg list-installed 2>/dev/null | grep -q "^$pkg " || missing="$missing $pkg"
 fi
 done
 
