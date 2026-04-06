@@ -1,18 +1,15 @@
 #!/bin/sh
 
-EP_LIST='Россия        |engage.cloudflareclient.com:4500
-Россия #2     |engage.cloudflareclient.com:2408
-Россия #3     |engage.cloudflareclient.com:500
-Нидерланды #2 |45.84.222.208:4500
-Сингапур      |5.34.176.170:4500
-Латвия        |150.241.75.91:4500
-Америка       |usa.tribukvy.ltd:4500
-Нидерланды    |nl.tribukvy.ltd:4500
-Финляндия     |fi1.tribukvy.ltd:4500
-Россия #3     |ru0.tribukvy.ltd:4500
-Эстония       |ee.tribukvy.ltd:4500
-Польша #2     |pl0.tribukvy.ltd:4500
-Польша        |pl.tribukvy.ltd:4500'
+EP_LIST='Россия #1  |engage.cloudflareclient.com:4500
+Россия #2  |engage.cloudflareclient.com:2408
+Россия #3  |engage.cloudflareclient.com:500
+Америка    |usa.tribukvy.ltd:4500
+Нидерланды |nl.tribukvy.ltd:4500
+Финляндия  |fi1.tribukvy.ltd:4500
+Россия #4  |ru0.tribukvy.ltd:4500
+Эстония    |ee.tribukvy.ltd:4500
+Польша #2  |pl0.tribukvy.ltd:4500
+Польша #1  |pl.tribukvy.ltd:4500'
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -24,6 +21,7 @@ CYAN="\033[1;36m"
 clear
 
 chose_endpoint() {
+while true; do
 echo -e "${CYAN}Тестируем пинг до ${NC}endpoint\n"
 TMP_FILE=$(mktemp)
 while IFS='|' read -r country ep; do
@@ -43,8 +41,10 @@ done <<EOF
 $EP_LIST
 EOF
 wait
+
 SORTED_LIST=$(sort -t'|' -k1n "$TMP_FILE")
 rm -f "$TMP_FILE"
+
 i=1
 echo "$SORTED_LIST" | while IFS='|' read -r ping_sort country ep ping_val; do
 if [ "$ping_val" = "FAIL" ]; then
@@ -62,15 +62,37 @@ fi
 printf "${CYAN}%2d) ${GREEN}%-10s${MAGENTA}| ${color}%-7s${MAGENTA}| ${CYAN}%s${NC}\n" "$i" "$country" "$ping_val" "$ep"
 i=$((i+1))
 done
+
+echo -e "${CYAN}99) ${YELLOW}Обновить пинг${NC}"
+
 echo -en "\n${YELLOW}Выберите страну (Enter = Россия):${NC} "
 read num
+
 MAX_NUM=$(echo "$SORTED_LIST" | wc -l)
+
+# Enter → дефолт
+if [ -z "$num" ]; then
+ENDPOINT="engage.cloudflareclient.com:4500"
+break
+fi
+
+# Обновить
+if [ "$num" = "99" ]; then
+clear
+continue
+fi
+
+# Проверка числа
 if ! printf '%s' "$num" | grep -qE '^[0-9]+$' || [ "$num" -lt 1 ] || [ "$num" -gt "$MAX_NUM" ]; then
 ENDPOINT="engage.cloudflareclient.com:4500"
-else
+break
+fi
+
 ENDPOINT="$(echo "$SORTED_LIST" | sed -n "${num}p" | cut -d'|' -f3)"
 [ -z "$ENDPOINT" ] && ENDPOINT="engage.cloudflareclient.com:4500"
-fi
+break
+
+done
 echo
 }
 
