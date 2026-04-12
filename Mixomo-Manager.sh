@@ -230,21 +230,15 @@ check_status
 [ -f /etc/mihomo/config.yaml ] && while IFS='|' read -r c a; do h=${a%%:*}
 grep -qF "$h" /etc/mihomo/config.yaml && echo -e "${YELLOW}WARP endpoint:       ${CYAN}$c${NC}" && break
 done <<EOF
-Россия CF|engage.cloudflareclient.com:4500
-Россия CF ALT|engage.cloudflareclient.com:2408
-Нидерланды|45.84.222.208:4500
-Америка|usa-pop.astracat.ru:4500
-Сингапур|5.34.176.170:4500
-Латвия|150.241.75.91:4500
-Нидерланды 1|nl.tribukvy.ltd:4500
-Нидерланды 2|nl0.tribukvy.ltd:4500
-Финляндия 1|fi.tribukvy.ltd:4500
-Финляндия 2|fi0.tribukvy.ltd:4500
-Россия|ru.tribukvy.ltd:4500
+Россия|engage.cloudflareclient.com:4500
+Россия #2|engage.cloudflareclient.com:2408
+Россия #3|engage.cloudflareclient.com:500
+Америка|usa.tribukvy.ltd:4500
+Нидерланды|nl.tribukvy.ltd:4500
+Финляндия|fi1.tribukvy.ltd:4500
+Россия #4|ru0.tribukvy.ltd:4500
 Эстония|ee.tribukvy.ltd:4500
 Польша|pl.tribukvy.ltd:4500
-Германия|de.tribukvy.ltd:4500
-Литва|lt.tribukvy.ltd:4500
 EOF
 
 if [ -f "$CONFIGPATH" ]; then
@@ -280,6 +274,7 @@ case "$choiceM" in
 
 2)
   sh <(wget -q -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/mixomo_openwrt_delete.sh)
+  echo -e "\n${YELLOW}Рекомендую сделать перезагрузку роутера!${NC}"
   PAUSE
   ;;
 
