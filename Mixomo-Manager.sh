@@ -12,7 +12,7 @@ DGRAY="\033[38;5;244m"
 if command -v opkg >/dev/null 2>&1; then UPDATE="opkg update"; INSTALL="opkg install"; else UPDATE="apk update"; INSTALL="apk add"; fi
 
 if ! command -v curl >/dev/null 2>&1; then clear; echo -e "${CYAN}Устанавливаем ${NC}curl"
-$UPDATE >/dev/null 2>&1 && $INSTALL curl >/dev/null 2>&1 || { echo -e "\n${RED}Ошибка установки curl${NC}\n"; PAUSE ;return 1; }; fi;
+$UPDATE >/dev/null 2>&1 && $INSTALL curl >/dev/null 2>&1 || { echo -e "\n${RED}Ошибка установки curl${NC}\n";return 1; }; fi;
 
 
 CONFIGPATH="/etc/magitrickle/state/config.yaml"
