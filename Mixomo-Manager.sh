@@ -107,54 +107,34 @@ PODPISKA() {
 
   cat > /etc/mihomo/config.yaml <<EOF
 mixed-port: 7890
-allow-lan: false
 mode: rule
-log-level: error
 ipv6: false
-tcp-concurrent: true
-find-process-mode: off
+log-level: error
+allow-lan: false
 unified-delay: true
-
+tcp-concurrent: true
 external-controller: 0.0.0.0:9090
 external-ui: ui
 external-ui-url: https://github.com/MetaCubeX/metacubexd/releases/latest/download/compressed-dist.tgz
-secret: ""
+routing-mark: 2
 
-profile:
-  store-selected: false
-  store-fake-ip: false
-
-proxy-groups:
-  - name: "StressKVN"
-    type: fallback
-    use:
-      - StressKVN
-    url: "https://www.gstatic.com/generate_204"
-    interval: 120
-    tolerance: 100
-    lazy: false
-    max-failed-times: 3
-
-  - name: GLOBAL
-    type: select
-    proxies:
-      - "StressKVN"
-      - REJECT
-
-rules:
-  - "MATCH,GLOBAL"
+proxies:
 
 proxy-providers:
-  StressKVN:
+  sub-sub:
     type: http
     url: "$SUB_URL"
-    interval: 43200
-    health-check:
-      enable: true
-      interval: 300
-      url: "https://www.gstatic.com/generate_204"
-      expected-status: 204
+    interval: 36000
 
+proxy-groups:
+  - name: Proxy
+    type: select
+    proxies:
+    use:
+      - sub-sub
+
+rules:
+  - MATCH,Proxy
 EOF
 
 /etc/init.d/mihomo reload >/dev/null 2>&1
