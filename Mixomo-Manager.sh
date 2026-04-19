@@ -11,19 +11,21 @@ DGRAY="\033[38;5;244m"
 
 LAN_IP=$(uci get network.lan.ipaddr 2>/dev/null | cut -d/ -f1)
 
+PAUSE() { echo -ne "\nНажмите Enter..."; read dummy; }
+
 if command -v opkg >/dev/null 2>&1; then UPDATE="opkg update"; INSTALL="opkg install"; else UPDATE="apk update"; INSTALL="apk add"; fi
 
 if ! command -v curl >/dev/null 2>&1; then clear; echo -e "${CYAN}Устанавливаем ${NC}curl"
-$UPDATE >/dev/null 2>&1 && $INSTALL curl >/dev/null 2>&1 || { echo -e "\n${RED}Ошибка установки curl${NC}\n";return 1; }; fi;
+$UPDATE >/dev/null 2>&1 && $INSTALL curl >/dev/null 2>&1 || { echo -e "\n${RED}Не удалось установить curl${NC}"; PAUSE; return 1; }; fi
 
+if ! command -v unzip >/dev/null 2>&1; then clear; echo -e "${CYAN}Устанавливаем ${NC}unzip"
+$UPDATE >/dev/null 2>&1 && $INSTALL unzip >/dev/null 2>&1 || { echo -e "\n${RED}Не удалось установить unzip!${NC}"; PAUSE; return 1; }; fi
 
 CONFIGPATH="/etc/magitrickle/state/config.yaml"
 URL_DEFAULT="https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/refs/heads/main/files/MagiTrickle/config.yaml"
 URL_ITDOG="https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/refs/heads/main/files/MagiTrickle/configAD.yaml"
 
 echo 'sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/Mixomo-Manager.sh)' > /usr/bin/mom; chmod +x /usr/bin/mom
-
-PAUSE() { echo -ne "\nНажмите Enter..."; read dummy; }
 
 magitrickle_config() {
 echo -e "\n${MAGENTA}Выбор списка для MagiTrickle${NC}"
@@ -45,21 +47,23 @@ done
 if [ -n "$MAGITRICKLE_CONFIG_URL" ]; then
   echo -e "\n${CYAN}Скачиванем и устанавливаем список${NC}"
   wget -q -O "$CONFIGPATH" "$MAGITRICKLE_CONFIG_URL" || {
-    echo -e "${RED}Ошибка: не удалось скачать список!${NC}"
+    echo -e "\n${RED}Ошибка: не удалось скачать список!${NC}"
     echo "URL: $MAGITRICKLE_CONFIG_URL"
+    PAUSE
     return 1
   }
 
   if [ ! -s "$CONFIGPATH" ]; then
-    echo -e "${RED}Ошибка: файл пустой или не создан:${NC} $CONFIGPATH"
+    echo -e "\n${RED}Ошибка: файл пустой или не создан:${NC} $CONFIGPATH"
+    PAUSE
     return 1
   fi
 
-  echo -e "${GREEN}Список успешно изменён!${NC}"
   /etc/init.d/magitrickle enable >/dev/null 2>&1
   /etc/init.d/magitrickle reload >/dev/null 2>&1
   /etc/init.d/magitrickle start >/dev/null 2>&1
   /etc/init.d/magitrickle restart >/dev/null 2>&1
+  echo -e "${GREEN}Список успешно изменён!${NC}"
   PAUSE
 fi
 }
@@ -99,10 +103,7 @@ check_status() {
 }
 
 PODPISKA() {
-
-
-
-  echo -ne "\n${YELLOW}Введите ссылку на подписку (${CYAN}https://sub....${YELLOW}): ${NC}"
+  echo -ne "\n${YELLOW}Введите ссылку на подписку (${CYAN}https://...${YELLOW}): ${NC}"
   read -r SUB_URL
 
   [ -z "$SUB_URL" ] && echo -e "\n${RED}Ошибка! Ссылка пустая!${NC}" && PAUSE && return
@@ -159,7 +160,7 @@ proxy-providers:
 
   Подписка:
     type: http
-    url: "$SUB_URL" # ЗДЕСЬ УКАЖИТЕ ССЫЛКУ НА ВАШУ ПОДПИСКУ
+    url: "$SUB_URL"
     path: ./proxy-providers/sub.yaml
     interval: 86400
     health-check:
@@ -204,28 +205,21 @@ rule-providers:
     interval: 86400
 
 rules:
-
-  # Правила для списков из rule-providers
   - RULE-SET,youtube,Сервер для YouTube
-
-  # Правило для остального трафика
   - MATCH,Сервер для остального трафика
 EOF
 
 /etc/init.d/mihomo reload >/dev/null 2>&1
 /etc/init.d/mihomo restart >/dev/null 2>&1
 
-  echo -e "\n${GREEN}Подписка успешно применена!${NC}"
-
-  PAUSE
+echo -e "\n${GREEN}Подписка успешно применена!${NC}"
 }
 
 show_menu() {
 clear
 echo -e "╔═══════════════════════════════════╗"
-echo -e "║ ${BLUE}Mixomo by Internet-Helper Manager${NC} ║"
+echo -e "║    Mixomo Manager by StressOzz    ║"
 echo -e "╚═══════════════════════════════════╝"
-echo -e "                         ${DGRAY}by StressOzz${NC}\n"
 
 check_status
 
@@ -250,8 +244,6 @@ fi
 
 [ -f "$CONFIGPATH" ] && echo -e "${YELLOW}Web-интерфейс MagiTrickle:${NC}  ${CYAN}$LAN_IP:8080${NC}"
 [ -f /etc/mihomo/config.yaml ] && echo -e "${YELLOW}Web-интерфейс Mihomo:${NC}       ${CYAN}$LAN_IP:9090/ui${NC}"
-
-
 
 echo -e "\n${CYAN}1) ${GREEN}Установить ${NC}Mixomo"
 echo -e "${CYAN}2) ${GREEN}Удалить ${NC}Mixomo"
@@ -284,9 +276,9 @@ case "$choiceM" in
   magitrickle_config
   ;;
 
-
 4) 
   PODPISKA
+  PAUSE
   ;;
 
 5)
