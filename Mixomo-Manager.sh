@@ -218,8 +218,8 @@ echo -e "\n${GREEN}Подписка успешно применена!${NC}"
 show_menu() {
 clear
 echo -e "╔═══════════════════════════════════╗"
-echo -e "║    Mixomo Manager by StressOzz    ║"
-echo -e "╚═══════════════════════════════════╝"
+echo -e "║    ${BLUE}Mixomo Manager by StressOzz${NC}    ║"
+echo -e "╚═══════════════════════════════════╝\n"
 
 check_status
 
