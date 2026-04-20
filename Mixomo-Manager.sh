@@ -173,7 +173,7 @@ proxy-providers:
 proxy-groups:
 
   - name: "Сервер для YouTube"
-    type: fallback
+    type: select
     url: http://gstatic.com/generate_204
     expected-status: 204
     interval: 300
@@ -185,7 +185,7 @@ proxy-groups:
       - "Подписка"
 
   - name: "Сервер для остального трафика"
-    type: fallback
+    type: select
     url: http://gstatic.com/generate_204
     expected-status: 204
     interval: 300
