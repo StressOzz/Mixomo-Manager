@@ -206,7 +206,7 @@ TMP1="/tmp/zashboard.zip"
 DIR1="/etc/mihomo/ui"
 URL1="https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip"
 for i in 1 2 3 4 5; do
-    curl -fL --connect-timeout 5 --max-time 30 -o "$TMP1" "$URL1" && break
+    curl -fL --connect-timeout 5 --max-time 30 -o "$TMP1" "$URL1" >/dev/null && break
     sleep 2
 done
 [ -f "$TMP1" ] || { echo -e "\n${RED}Ошибка скачивания WEB UI!${NC}"; PAUSE; }
