@@ -205,14 +205,14 @@ EOF
 TMP1="/tmp/zashboard.zip"
 DIR1="/etc/mihomo/ui"
 URL1="https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip"
-for i in 1 2 3 4 5; do
-    curl -fL --connect-timeout 5 --max-time 30 -o "$TMP1" "$URL1" >/dev/null && break
+for i in 1 2 3 4 5 6 7; do
+    curl -fL --connect-timeout 5 --max-time 15 -o "$TMP1" "$URL1" >/dev/null 2>&1 && break
     sleep 2
 done
 [ -f "$TMP1" ] || { echo -e "\n${RED}Ошибка скачивания WEB UI!${NC}"; PAUSE; }
 mkdir -p "$DIR1"
 rm -rf "$DIR1"/*
-unzip -o "$TMP1" -d /tmp/zashboard
+unzip -o "$TMP1" -d /tmp/zashboard >/dev/null 2>&1
 cp -r /tmp/zashboard/dist/* "$DIR1"/
 rm -rf "$TMP1" /tmp/zashboard
 ###
