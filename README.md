@@ -1,3 +1,17 @@
+<h1 align="center">Точечная маршрутизация сетевого трафика через WARP при помощи Mihomo, hev-socks5-tunnel и MagiTrickle на роутере OpenWRT.</h1>
+
+<div align="center">
+
+![Platform](https://img.shields.io/badge/Platform-OpenWrt-orange)
+![Architecture](https://img.shields.io/badge/Architecture-All%20(OpenWrt)-yellow)
+![Script](https://img.shields.io/badge/Script-sh-informational)
+![Status](https://img.shields.io/badge/Status-Active-success)
+![Community](https://img.shields.io/badge/Community-Enabled-green)
+[![Views](https://views.whatilearened.today/views/github/StressOzz/Mixomo-Manager.svg)](https://github.com/StressOzz/Mixomo-Manager)
+![GitHub last commit](https://img.shields.io/github/last-commit/StressOzz/Zapret-Manager)
+
+</div>
+
 # Инструкция по установке и настройке через скрипт:
 
 - в **SSH** запустите скрипт:
