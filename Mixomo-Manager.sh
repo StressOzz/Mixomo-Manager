@@ -161,6 +161,7 @@ proxy-providers:
   Подписка:
     type: http
     url: "$SUB_URL"
+    exclude-filter: "(?i)LTE"
     path: ./proxy-providers/sub.yaml
     interval: 86400
     health-check:
