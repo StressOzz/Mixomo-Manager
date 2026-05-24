@@ -380,7 +380,7 @@ case "$choiceM" in
   ;;
 
 7)
-  PANEL;  PAUSE ;;
+  UI_INSTALL;  PAUSE ;;
 888)
   sh <(wget -q -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/mixomo_openwrt_delete.sh)
   sh <(wget -q -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/mixomo_openwrt_install.sh)
