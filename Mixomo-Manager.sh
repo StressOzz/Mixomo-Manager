@@ -226,23 +226,21 @@ echo -e "\n${GREEN}Подписка успешно применена!${NC}"
 
 UI_INSTALL() {
 while true; do
-  echo
-  echo "Выберите панель для уставноки"
-	echo "1) Zashboard"
-	echo "2) MetaCubeXD"
-	echo "Enter) Выход в главное меню"
-	printf "Выберите вариант: "
+	echo -e "\n${CYAN}1) ${GREEN}Zashboard${NC}"
+	echo -e "${CYAN}2) ${GREEN}MetaCubeXD${NC}"
+	echo -e "${CYAN}Enter) ${GREEN}Выход в главное меню${NC}\n"
+	echo -en "${YELLOW}Выберите панель для уставновки:${NC} "
 	read -r choice
 
 	case "$choice" in
 	1)
-		echo -e "\nУстанавливаем Zashboard...\n"
+		echo -e "\n${MAGENTA}Устанавливаем Zashboard${NC}"
 
 		rm -rf /etc/mihomo/ui
 
 		curl -fL -o /tmp/zashboard.zip \
 		https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip || {
-			echo -e "\nОшибка загрузки Zashboard\n"
+			echo -e "\n${RED}Ошибка загрузки Zashboard${NC}"
 			return
 		}
 
@@ -251,7 +249,7 @@ while true; do
 		rm -rf /tmp/zashboard
 
 		unzip -oq /tmp/zashboard.zip -d /tmp/zashboard || {
-			echo -e "\nОшибка распаковки архива\n"
+			echo -e "\n${RED}Ошибка распаковки архива${NC}"
 			rm -rf /tmp/zashboard.zip /tmp/zashboard
 			return
 		}
@@ -260,18 +258,18 @@ while true; do
 
 		rm -rf /tmp/zashboard.zip /tmp/zashboard
 
-		echo -e "\nZashboard успешно установлен\n"
+		echo -e "\n${GREEN}Zashboard успешно установлен${NC}"
 		break
 		;;
 
 	2)
-		echo -e "\nУстанавливаем MetaCubeXD...\n"
+		echo -e "\n${MAGENTA}Устанавливаем MetaCubeXD${NC}"
 
 		rm -rf /etc/mihomo/ui
 
 		curl -fL -o /tmp/metacubexd.tgz \
 		https://github.com/MetaCubeX/metacubexd/releases/latest/download/compressed-dist.tgz || {
-			echo -e "\nОшибка загрузки MetaCubeXD\n"
+			echo -e "\n${RED}Ошибка загрузки MetaCubeXD${NC}"
 			return
 		}
 
@@ -281,7 +279,7 @@ while true; do
 		mkdir -p /tmp/metacubexd
 
 		tar -xzf /tmp/metacubexd.tgz -C /tmp/metacubexd || {
-			echo -e "\nОшибка распаковки архива\n"
+			echo -e "\n${RED}Ошибка распаковки архива${NC}"
 			rm -rf /tmp/metacubexd.tgz /tmp/metacubexd
 			return
 		}
@@ -290,7 +288,7 @@ while true; do
 
 		rm -rf /tmp/metacubexd.tgz /tmp/metacubexd
 
-		echo -e "\nMetaCubeXD успешно установлен\n"
+		echo -e "\n${GREEN}MetaCubeXD успешно установлен${NC}"
 		break
 		;;
 
@@ -317,12 +315,6 @@ done <<EOF
 Россия|engage.cloudflareclient.com:4500
 Россия #2|engage.cloudflareclient.com:2408
 Россия #3|engage.cloudflareclient.com:500
-Америка|usa.tribukvy.ltd:4500
-Нидерланды|nl.tribukvy.ltd:4500
-Финляндия|fi1.tribukvy.ltd:4500
-Россия #4|ru0.tribukvy.ltd:4500
-Эстония|ee.tribukvy.ltd:4500
-Польша|pl.tribukvy.ltd:4500
 EOF
 
 if [ -f "$CONFIGPATH" ]; then
@@ -343,7 +335,7 @@ else
 fi
 echo -e "${CYAN}5) ${GREEN}Сгенерировать ${NC}WARP ${GREEN}в ${NC}/root/WARP.conf"
 echo -e "${CYAN}6) ${GREEN}Интегрировать ${NC}/root/WARP.conf${GREEN} в ${NC}Mihomo"
-echo -e "${CYAN}7) ${GREEN}Выбрать и установить панель для ${NC}Mihomo"
+[ -f /etc/mihomo/config.yaml ] && echo -e "${CYAN}7) ${GREEN}Выбрать и установить панель для ${NC}Mihomo"
 # echo -e "${CYAN}888) ${GREEN}Удалить ${NC}→ ${GREEN}установить ${NC}→ ${GREEN}настроить ${NC}mihomo-openwrt"
 echo -e "${CYAN}Enter) ${GREEN}Выход\n"
 echo -ne "${YELLOW}Выберите пункт: ${NC}"
