@@ -224,6 +224,85 @@ rm -rf "$TMP1" /tmp/zashboard
 echo -e "\n${GREEN}Подписка успешно применена!${NC}"
 }
 
+UI_INSTALL() {
+while true; do
+  echo
+  echo "Выберите панель для уставноки"
+	echo "1) Zashboard"
+	echo "2) MetaCubeXD"
+	echo "Enter) Выход в главное меню"
+	printf "Выберите вариант: "
+	read -r choice
+
+	case "$choice" in
+	1)
+		echo -e "\nУстанавливаем Zashboard...\n"
+
+		rm -rf /etc/mihomo/ui
+
+		curl -fL -o /tmp/zashboard.zip \
+		https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip || {
+			echo -e "\nОшибка загрузки Zashboard\n"
+			return
+		}
+
+		mkdir -p /etc/mihomo/ui
+		rm -rf /etc/mihomo/ui/*
+		rm -rf /tmp/zashboard
+
+		unzip -oq /tmp/zashboard.zip -d /tmp/zashboard || {
+			echo -e "\nОшибка распаковки архива\n"
+			rm -rf /tmp/zashboard.zip /tmp/zashboard
+			return
+		}
+
+		cp -r /tmp/zashboard/dist/* /etc/mihomo/ui/
+
+		rm -rf /tmp/zashboard.zip /tmp/zashboard
+
+		echo -e "\nZashboard успешно установлен\n"
+		break
+		;;
+
+	2)
+		echo -e "\nУстанавливаем MetaCubeXD...\n"
+
+		rm -rf /etc/mihomo/ui
+
+		curl -fL -o /tmp/metacubexd.tgz \
+		https://github.com/MetaCubeX/metacubexd/releases/latest/download/compressed-dist.tgz || {
+			echo -e "\nОшибка загрузки MetaCubeXD\n"
+			return
+		}
+
+		mkdir -p /etc/mihomo/ui
+		rm -rf /etc/mihomo/ui/*
+		rm -rf /tmp/metacubexd
+		mkdir -p /tmp/metacubexd
+
+		tar -xzf /tmp/metacubexd.tgz -C /tmp/metacubexd || {
+			echo -e "\nОшибка распаковки архива\n"
+			rm -rf /tmp/metacubexd.tgz /tmp/metacubexd
+			return
+		}
+
+		cp -r /tmp/metacubexd/* /etc/mihomo/ui/
+
+		rm -rf /tmp/metacubexd.tgz /tmp/metacubexd
+
+		echo -e "\nMetaCubeXD успешно установлен\n"
+		break
+		;;
+
+	*)
+		return
+		;;
+	esac
+done
+}
+
+
+
 show_menu() {
 clear
 echo -e "╔═══════════════════════════════════╗"
@@ -264,6 +343,7 @@ else
 fi
 echo -e "${CYAN}5) ${GREEN}Сгенерировать ${NC}WARP ${GREEN}в ${NC}/root/WARP.conf"
 echo -e "${CYAN}6) ${GREEN}Интегрировать ${NC}/root/WARP.conf${GREEN} в ${NC}Mihomo"
+echo -e "${CYAN}7) ${GREEN}Выбрать и установить панель для ${NC}Mihomo"
 # echo -e "${CYAN}888) ${GREEN}Удалить ${NC}→ ${GREEN}установить ${NC}→ ${GREEN}настроить ${NC}mihomo-openwrt"
 echo -e "${CYAN}Enter) ${GREEN}Выход\n"
 echo -ne "${YELLOW}Выберите пункт: ${NC}"
@@ -298,7 +378,9 @@ case "$choiceM" in
   sh <(wget -q -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/WARP_to_conf.sh)
   PAUSE
   ;;
-  
+
+7)
+  PANEL;  PAUSE ;;
 888)
   sh <(wget -q -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/mixomo_openwrt_delete.sh)
   sh <(wget -q -O - https://raw.githubusercontent.com/StressOzz/Mixomo-Manager/main/mixomo_openwrt_install.sh)
