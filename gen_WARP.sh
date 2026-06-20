@@ -169,8 +169,13 @@ id=$(echo "$response" | jq -r '.result.id')
 token=$(echo "$response" | jq -r '.result.token')
 
 if [ -z "$id" ] || [ "$id" = "null" ]; then
-echo -e "${RED}Ошибка регистрации${NC} $response"
-exit 1
+    echo -e "${RED}Ошибка регистрации${NC} $response"
+    if [ "$(/etc/init.d/zapret status 2>/dev/null)" = "running" ]; then
+        echo -e "${YELLOW}Zapret запущен. Направьте через него ${NC}cloudflareclient.com${YELLOW} и повторите попытку.${NC}"
+    else
+        echo -e "${YELLOW}Требуется установленный и запущенный ${NC}Zapret${YELLOW} с маршрутизацией ${NC}cloudflareclient.com${YELLOW} через него.${NC}"
+    fi
+    exit 1
 fi
 
 ################################################################################################
