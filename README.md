@@ -1,3 +1,7 @@
+> [!IMPORTANT] 
+> # Mixomo Manager переехал в [Zapret Manager](https://github.com/StressOzz/Zapret-Manager)
+> дальнейшие дополнения, улучшения будут только там...
+
 <h1 align="center">Точечная маршрутизация сетевого трафика через WARP при помощи Mihomo, hev-socks5-tunnel и MagiTrickle на роутере OpenWRT.</h1>
 
 <div align="center">
